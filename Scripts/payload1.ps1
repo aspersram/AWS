@@ -1,3 +1,4 @@
+$erroractionpreference="continue"
 import-module awspowershell
 if(!(test-path c:\temp)) {md c:\temp}
 start-transcript c:\temp\transcript.txt -force
