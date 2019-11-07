@@ -2,7 +2,7 @@ import-module awspowershell
 if(!(test-path c:\temp)) {md c:\temp}
 start-transcript c:\temp\transcript.txt
 $attrs=@{}
-$object={} | select Hostname, Domain, IPaddress, ServiceID, InstanceID, Uptime, Attrs
+$object={} | select Hostname, Domain, IPaddress, ServiceID, InstanceID, Uptime, Attrs, towerhosts
 
 write-host "Getting Local Data"
 $c=Get-CimInstance win32_computersystem 
@@ -44,6 +44,6 @@ $password="passwordOniHAL19" #AWX
 $secPw = ConvertTo-SecureString $password -AsPlainText -Force
 $cred1 = New-Object PSCredential -ArgumentList $username, $secPw
 connect-ansibletower -credential $cred1 -towerurl 'http://172.31.25.161/' -DisableCertificateVerification
-
+$object.towerhosts=get-ansibleinventory
 $object | convertto-json > c:\temp\$u
 stop-transcript
