@@ -1,5 +1,5 @@
 $erroractionpreference="continue"
-import-module awspowershell
+#import-module awspowershell
 if(!(test-path c:\temp)) {md c:\temp}
 start-transcript c:\temp\transcript.txt -force
 $attrs=@{}
@@ -23,28 +23,5 @@ $object.uptime=($u.split("-")[1]).trimend(".txt")
 #$object.instanceid=$instanceid
 $attrs.add("AWS_INSTANCE_IPV4", $ip)
 $object.attrs=$attrs
-
-write-host "Connecting to Ansible Tower:"
-import-module c:\ps\ansibletower\ansibletower.psm1
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-add-type @"
-    using System.Net;
-    using System.Security.Cryptography.X509Certificates;
-    public class TrustAllCertsPolicy : ICertificatePolicy {
-        public bool CheckValidationResult(
-            ServicePoint srvPoint, X509Certificate certificate,
-            WebRequest request, int certificateProblem) {
-            return true;
-        }
-    }
-"@
-[System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-
-$username="admin"
-$password="passwordOniHAL19" #AWX
-$secPw = ConvertTo-SecureString $password -AsPlainText -Force
-$cred1 = New-Object PSCredential -ArgumentList $username, $secPw
-connect-ansibletower -credential $cred1 -towerurl 'http://172.31.25.161/' -DisableCertificateVerification
-$object.towerhosts=get-ansibleinventory
 $object | convertto-json > c:\temp\$u
 stop-transcript
