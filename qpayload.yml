@@ -6,4 +6,4 @@
   gather_facts: false
   tasks:
     - name: Run powershell script
-      script: Scripts/payload.ps1
+      script: Scripts/payload1.ps1
