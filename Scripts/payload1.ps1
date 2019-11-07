@@ -1,6 +1,6 @@
 import-module awspowershell
 if(!(test-path c:\temp)) {md c:\temp}
-start-transcript c:\temp\transcript.txt
+start-transcript c:\temp\transcript.txt -force
 $attrs=@{}
 $object={} | select Hostname, Domain, IPaddress, ServiceID, InstanceID, Uptime, Attrs, towerhosts
 
